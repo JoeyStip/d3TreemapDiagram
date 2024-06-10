@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="index.css" rel="stylesheet">
+        <title>Treemap Diagram</title>
+        <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoIUt2rXoze_Zrmbk7ZmjWcvUdyDFz-Bm0gQ&s">
+    </head>
+    <body>     
+        <script type="module">
+            import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+            const w = 1000 - margin.left - margin.right;
+            const h = 800 - margin.top - margin.bottom;
+
+            const margin = {
+                left: 50, 
+                right: 50,
+                top: 50,
+                bottom: 50
+            };
+
+            const container = d3
+                .select("body")
+                .append("div")
+                .attr("id", "container")
+
+            const canvasContainer = container
+                .append("svg")
+                .attr("width", w + margin.left + margin.right)
+                .attr("height", h + margin.top + margin.bottom);
+            
+            const canvas = canvasContainer
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h)
+                .attr('transform', 'translate(' + margin.left +',' + margin.top + ')');
+
+        </script>
+        <script src='https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js'></script>
+    </body>
+</html>
