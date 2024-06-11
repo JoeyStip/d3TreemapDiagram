@@ -23,22 +23,66 @@
             const container = d3
                 .select("body")
                 .append("div")
-                .attr("id", "container")
+                .attr("id", "container");
 
-            // const canvasContainer = container
-            //     .append("div")
-            //     .attr("id", "canvasContainer")
-            //     .attr("width", w + margin.left + margin.right)
-            //     .attr("height", 200);
+            const titleAndDesc = container
+                .append("div")
+                .attr('id', 'titleAndDesc');
+
+            const title = titleAndDesc
+                .append("h1")
+                .text("Treemap Diagram")
+                .attr("id", 'title');
+
+            const desc = titleAndDesc
+                .append("h3")
+                .text("a neat little description")
+                .attr('id', 'desc')
             
             const canvas = container
                 .append("svg")
                 .attr("id", "canvas")
                 .attr("width", w)
                 .attr("height", h)
-                .style("border", "1px solid black")
                 .attr('transform', 'translate(' + margin.left +',' + margin.top + ')');
 
+
+            fetch('https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    const root = d3.hierarchy(data).sum((d)=>d.value)
+
+                    d3.treemap()
+                        .size([w,h])
+                        .padding(2)
+                        (root)
+
+                    canvas
+                        .selectAll("rect")
+                        .data(root.leaves())
+                        .enter()
+                        .append("rect")
+                        .attr("x", (d)=>d.x0)
+                        .attr('y', (d)=>d.y0)
+                        .attr("width", (d)=>d.x1-d.x0)
+                        .attr("height", (d)=>d.y1-d.y0)
+                        .style("stroke", 'black')
+                        .style('fill', 'red');
+
+                    canvas
+                        .selectAll("text")
+                        .data(root.leaves())
+                        .enter()
+                        .append("text")
+                        .attr('x',(d)=>d.x0+5)
+                        .attr('y', (d)=>d.y0+20)
+                        .text((d)=>d.data.name)
+                        .attr('font-size', '15px')
+                        .attr('fill', 'white')
+                    
+                });
+ 
         </script>
         <script src='https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js'></script>
     </body>

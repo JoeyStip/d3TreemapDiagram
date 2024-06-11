@@ -4,9 +4,12 @@
 
 body {
   background-color: gray;
-  height: 919;
 }
 
 #canvasContainer {
   border: 1px solid black;
+}
+
+#titleAndDesc {
+  margin: 0 auto;
 }/*# sourceMappingURL=index.css.map */
