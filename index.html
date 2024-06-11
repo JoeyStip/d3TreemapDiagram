@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
         <link href="index.css" rel="stylesheet">
         <title>Treemap Diagram</title>
         <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoIUt2rXoze_Zrmbk7ZmjWcvUdyDFz-Bm0gQ&s">
@@ -9,30 +10,33 @@
         <script type="module">
             import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-            const w = 1000 - margin.left - margin.right;
-            const h = 800 - margin.top - margin.bottom;
-
             const margin = {
                 left: 50, 
                 right: 50,
                 top: 50,
-                bottom: 50
+                bottom: 150
             };
+
+            const w = 1000 - margin.left - margin.right;
+            const h = 950 - margin.top - margin.bottom;
 
             const container = d3
                 .select("body")
                 .append("div")
                 .attr("id", "container")
 
-            const canvasContainer = container
-                .append("svg")
-                .attr("width", w + margin.left + margin.right)
-                .attr("height", h + margin.top + margin.bottom);
+            // const canvasContainer = container
+            //     .append("div")
+            //     .attr("id", "canvasContainer")
+            //     .attr("width", w + margin.left + margin.right)
+            //     .attr("height", 200);
             
-            const canvas = canvasContainer
+            const canvas = container
                 .append("svg")
+                .attr("id", "canvas")
                 .attr("width", w)
                 .attr("height", h)
+                .style("border", "1px solid black")
                 .attr('transform', 'translate(' + margin.left +',' + margin.top + ')');
 
         </script>
