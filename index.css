@@ -1,9 +1,15 @@
 * {
   box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   background-color: gray;
+  text-align: center;
+}
+
+#container {
+  margin: 0 auto;
 }
 
 #canvasContainer {
@@ -11,5 +17,5 @@ body {
 }
 
 #titleAndDesc {
-  margin: 0 auto;
+  text-align: center;
 }/*# sourceMappingURL=index.css.map */
