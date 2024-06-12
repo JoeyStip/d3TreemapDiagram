@@ -60,7 +60,10 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
-                    const root = d3.hierarchy(data).sum((d)=>d.value)
+                    const root = d3
+                        .hierarchy(data)
+                        .sum((d)=>d.value)
+                        .sort((a, b) => b.height - a.height || b.value - b.value);
 
                     d3.treemap()
                         .size([w,h])
@@ -84,7 +87,10 @@
                         .style('fill', (d)=>{
                             return colors[d.data.category];
                         })
-                        .attr("class", "tile");
+                        .attr("class", "tile")
+                        .attr("data-name", (d)=>d.data.name)
+                        .attr("data-category", (d)=>d.data.category)
+                        .attr("data-value", (d)=>d.data.value);
 
                     const text = rectGroups
                         .append("text")
