@@ -19,6 +19,15 @@
 
             const w = 1000 - margin.left - margin.right;
             const h = 900 - margin.top - margin.bottom;
+            const colors = {
+                'Action': "#66c2a5",
+                'Drama': '#fc8d62',
+                'Adventure': '#8da0cb',
+                'family': '#e78ac3',
+                'Animation': '#a6d854',
+                'Comedy': '#ffd92f',
+                'Biography': '#e5c494'
+            }
 
             const container = d3
                 .select("body")
@@ -37,7 +46,7 @@
             const desc = titleAndDesc
                 .append("h3")
                 .text("a neat little description")
-                .attr('id', 'desc')
+                .attr('id', 'description')
             
             const canvas = container
                 .append("svg")
@@ -58,27 +67,44 @@
                         .padding(2)
                         (root)
 
-                    canvas
+                    const rectGroups = canvas
                         .selectAll("rect")
                         .data(root.leaves())
                         .enter()
+                        .append("g")
+                        .attr("id", (d)=>d.data.name)
+
+                    const rectangles = rectGroups
                         .append("rect")
                         .attr("x", (d)=>d.x0)
                         .attr('y', (d)=>d.y0)
                         .attr("width", (d)=>d.x1-d.x0)
                         .attr("height", (d)=>d.y1-d.y0)
                         .style("stroke", 'black')
-                        .style('fill', 'red');
+                        .style('fill', (d)=>{
+                            return colors[d.data.category];
+                        })
+                        .attr("class", "tile");
 
-                    canvas
-                        .selectAll("text")
-                        .data(root.leaves())
-                        .enter()
+                    const text = rectGroups
                         .append("text")
+                        .selectAll('tspan')
+                        .data((d)=>{
+                            return d.data.name.split(/(?=[A-Z][^A-Z])/g)
+                                .map((v)=>{
+                                    return {
+                                        text: v,
+                                        x0: d.x0,
+                                        y0: d.y0
+                                    }
+                                });
+                        })
+                        .enter()
+                        .append('tspan')
                         .attr('x',(d)=>d.x0+5)
-                        .attr('y', (d)=>d.y0+20)
-                        .text((d)=>d.data.name)
-                        .attr('font-size', '15px')
+                        .attr('y', (d, i)=>d.y0+15 + (i * 10))
+                        .text((d)=>d.text)
+                        .attr('font-size', '0.6em')
                         .attr('fill', 'white')
                     
                 });
