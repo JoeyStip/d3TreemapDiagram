@@ -65,7 +65,8 @@
                         .sum((d)=>d.value)
                         .sort((a, b) => b.height - a.height || b.value - b.value);
 
-                    d3.treemap()
+                    d3
+                        .treemap()
                         .size([w,h])
                         .padding(2)
                         (root)
@@ -112,6 +113,21 @@
                         .text((d)=>d.text)
                         .attr('font-size', '0.6em')
                         .attr('fill', 'white')
+
+                    const legend = canvas
+                        .append('g')
+                        .attr('id', 'legend')
+
+                    const squares = legend
+                        .selectAll('rect')
+                        .data(colors)
+                        .enter()
+                        .append('rect')
+                        .attr('x', (d, i)=> i * 20)
+                        .attr('y', 15)
+                        .attr('width', 15)
+                        .attr('height', 15)
+                        .style('fill', (d)=>colors[d])
                     
                 });
  
