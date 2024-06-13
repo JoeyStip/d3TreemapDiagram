@@ -21,13 +21,13 @@
             const w = 1000 - margin.left - margin.right;
             const h = 900 - margin.top - margin.bottom;
             const colors = {
-                'Action': "#66c2a5",
-                'Drama': '#fc8d62',
-                'Adventure': '#8da0cb',
-                'family': '#e78ac3',
-                'Animation': '#a6d854',
-                'Comedy': '#ffd92f',
-                'Biography': '#e5c494'
+                'Action': "#1b9e77",
+                'Drama': '#d95f02',
+                'Adventure': '#7570b3',
+                'family': '#e7298a',
+                'Animation': '#66a61e',
+                'Comedy': '#e6ab02',
+                'Biography': '#a6761d'
             }
 
             const container = d3
@@ -41,12 +41,12 @@
 
             const title = titleAndDesc
                 .append("h1")
-                .text("Treemap Diagram")
+                .text("Movie Sales")
                 .attr("id", 'title');
 
             const desc = titleAndDesc
                 .append("h3")
-                .text("a neat little description")
+                .text("A comparison of movie ticket sales by category")
                 .attr('id', 'description')
             
             const canvas = container

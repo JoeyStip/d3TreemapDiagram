@@ -1,11 +1,12 @@
 * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     overflow: hidden;
 }
 
 body {
-    background-color: gray;
+    background: rgb(186,186,186);
+    background: radial-gradient(circle, rgba(186,186,186,1) 0%, rgba(145,145,186,1) 63%, rgba(4,48,57,1) 100%);
     text-align: center;
 }
 
