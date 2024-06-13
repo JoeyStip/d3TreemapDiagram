@@ -11,10 +11,10 @@
             import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
             const margin = {
-                left: 50, 
-                right: 50,
+                left: 0, 
+                right: 0,
                 top: 10,
-                bottom: 150
+                bottom: 250
             };
 
             const w = 1000 - margin.left - margin.right;
@@ -55,7 +55,6 @@
                 .attr("height", h)
                 .attr('transform', 'translate(' + margin.left +',' + margin.top + ')');
 
-
             fetch('https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json')
                 .then(response => response.json())
                 .then(data => {
@@ -71,14 +70,18 @@
                         .padding(2)
                         (root)
 
-                    const rectGroups = canvas
+                    const tiles = canvas
+                        .append('g')
+                        .attr('id', 'tiles')
+
+                    const tileGroups = tiles
                         .selectAll("rect")
                         .data(root.leaves())
                         .enter()
                         .append("g")
                         .attr("id", (d)=>d.data.name)
 
-                    const rectangles = rectGroups
+                    const rectangles = tileGroups
                         .append("rect")
                         .attr("x", (d)=>d.x0)
                         .attr('y', (d)=>d.y0)
@@ -93,7 +96,7 @@
                         .attr("data-category", (d)=>d.data.category)
                         .attr("data-value", (d)=>d.data.value);
 
-                    const text = rectGroups
+                    const text = tileGroups
                         .append("text")
                         .selectAll('tspan')
                         .data((d)=>{
@@ -114,20 +117,71 @@
                         .attr('font-size', '0.6em')
                         .attr('fill', 'white')
 
-                    const legend = canvas
-                        .append('g')
-                        .attr('id', 'legend')
+                    
 
-                    const squares = legend
-                        .selectAll('rect')
-                        .data(colors)
+                    let categories = root.leaves().map(function (nodes) {
+                        return nodes.data.category;
+                    });
+                    
+                    categories = categories.filter(function (category, index, self) {
+                        return self.indexOf(category) === index;
+                    });
+
+                    const legendH = 300;
+                    const legendW = 450;
+                    const squareSize = 30;
+                    const pad = 90;
+                    
+                    const legend = container
+                        .append('svg')
+                        .attr('id', 'legend')
+                        .attr('height', legendH)
+                        .attr('width', legendW)
+                        .attr('transform', 'translate(' + (0) + ',' + (0) + ')')
+
+                    const squaresGroups = legend
+                        .selectAll('g')
+                        .data(categories)
                         .enter()
+                        .append('g')
+                    
+                    const squares = squaresGroups
                         .append('rect')
-                        .attr('x', (d, i)=> i * 20)
-                        .attr('y', 15)
-                        .attr('width', 15)
-                        .attr('height', 15)
+                        .attr('x', (d, i)=>{
+                            if(i>3){
+                                return (i-4)*squareSize + ((i-4)*pad) 
+                            } else {
+                                return (i*squareSize)+(i*pad)
+                            }
+                        })
+                        .attr('y', (d, i)=>{
+                            if(i>3){
+                                return squareSize*2 + 25
+                            } else {
+                                return 25;
+                            }
+                        })
+                        .attr('width', squareSize)
+                        .attr('height', squareSize)
                         .style('fill', (d)=>colors[d])
+
+                    const squareDescription = squaresGroups
+                        .append('text')
+                        .text((d)=>d)
+                        .attr('x', (d, i)=>{
+                            if(i>3){
+                                return (i-4)*squareSize + ((i-4)*pad) + 35
+                            } else {
+                                return (i*squareSize)+(i*pad) + 35
+                            }
+                        })
+                        .attr('y', (d, i)=>{
+                            if(i>3){
+                                return squareSize*2 + 45 
+                            } else {
+                                return 45;
+                            }
+                        })
                     
                 });
  
