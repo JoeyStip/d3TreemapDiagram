@@ -7,6 +7,7 @@
         <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoIUt2rXoze_Zrmbk7ZmjWcvUdyDFz-Bm0gQ&s">
     </head>
     <body>     
+        <div id="tooltip"></div>
         <script type="module">
             import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
@@ -61,14 +62,19 @@
                     console.log(data)
                     const root = d3
                         .hierarchy(data)
+                        .eachBefore((d)=>{
+                            d.data.id = (d.parent ? d.parent.data.id + '.' : '') + d.data.name;
+                        })
                         .sum((d)=>d.value)
                         .sort((a, b) => b.height - a.height || b.value - b.value);
 
                     d3
                         .treemap()
                         .size([w,h])
-                        .padding(2)
                         (root)
+
+                    const tooltip = d3
+                        .select('#tooltip')
 
                     const tiles = canvas
                         .append('g')
@@ -94,7 +100,28 @@
                         .attr("class", "tile")
                         .attr("data-name", (d)=>d.data.name)
                         .attr("data-category", (d)=>d.data.category)
-                        .attr("data-value", (d)=>d.data.value);
+                        .attr("data-value", (d)=>d.data.value)
+                        .on('mouseover', (event)=>{
+                            let sales = event.target.__data__.data.value.replace(/\B(?=(\d{3})+$)/g, ',');
+                            tooltip
+                                .style('opacity', 0.95)
+                                .html(
+                                    'Title: ' + event.target.__data__.data.name + '<br/>' +
+                                    'Category: ' + event.target.__data__.data.category + '<br/>' + 
+                                    'Gross Sales: $' + sales
+                                )
+                                .attr('data-value', event.target.__data__.value)
+                        })
+                        .on('mousemove', (event)=>{
+                            tooltip
+                                .style('left', event.pageX + 20 + 'px')
+                                .style('top', event.pageY + 'px')
+                                .attr('transform', 'translate(' + event.pageX + 'px,' + event.pageY + 'px)')
+                        })
+                        .on('mouseout', ()=>{
+                            tooltip
+                                .style('opacity', 0);
+                        });
 
                     const text = tileGroups
                         .append("text")
@@ -164,6 +191,7 @@
                         .attr('width', squareSize)
                         .attr('height', squareSize)
                         .style('fill', (d)=>colors[d])
+                        .attr('class', 'legend-item')
 
                     const squareDescription = squaresGroups
                         .append('text')

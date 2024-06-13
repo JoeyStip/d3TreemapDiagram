@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
 }
 
 body {
@@ -17,4 +18,17 @@ body {
 
 #titleAndDesc {
     text-align: center;
+}
+
+#tooltip {
+    position: absolute;
+    width: auto;
+    height: auto;
+    background-color: cornsilk;
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+    text-align: left;
+    padding: 10px;
+    border-radius: 5px;
 }
